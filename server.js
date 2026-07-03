@@ -228,6 +228,10 @@ app.post('/webhook/telegram', async (req, res) => {
         .eq('invite_link', joinedLink);
 
       console.log(`Linked telegram_user_id ${userId} to invite link ${joinedLink}`);
+
+      // Explicitly revoke the link now that it's been used, so it can
+      // never be reused (even by the same user leaving and rejoining)
+      await telegram.revokeInviteLink(joinedLink);
     }
 
     res.status(200).send('OK');
