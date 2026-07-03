@@ -107,7 +107,7 @@ app.post('/webhook/cashfree', async (req, res) => {
 
     const event = req.body;
     const eventType = event.type;
-    const subscriptionId = event.data?.subscription?.subscription_id
+    const subscriptionId = event.data?.subscription_details?.subscription_id
       || event.data?.subscription_id;
 
     console.log('Webhook FULL payload:', JSON.stringify(event));
@@ -120,8 +120,8 @@ app.post('/webhook/cashfree', async (req, res) => {
     // Subscription activated OR a recurring payment succeeded —
     // grant/renew access
     if (
-      eventType === 'SUBSCRIPTION_STATUS_CHANGE' &&
-      event.data?.subscription?.subscription_status === 'ACTIVE'
+      eventType === 'SUBSCRIPTION_STATUS_CHANGED' &&
+      event.data?.subscription_details?.subscription_status === 'ACTIVE'
     ) {
       await grantOrRenewAccess(subscriptionId, event);
     }
@@ -135,8 +135,8 @@ app.post('/webhook/cashfree', async (req, res) => {
     if (
       eventType === 'SUBSCRIPTION_PAYMENT_FAILED' ||
       eventType === 'SUBSCRIPTION_PAYMENT_CANCELLED' ||
-      (eventType === 'SUBSCRIPTION_STATUS_CHANGE' &&
-        ['CANCELLED', 'EXPIRED', 'ON_HOLD'].includes(event.data?.subscription?.subscription_status))
+      (eventType === 'SUBSCRIPTION_STATUS_CHANGED' &&
+        ['CANCELLED', 'EXPIRED', 'ON_HOLD'].includes(event.data?.subscription_details?.subscription_status))
     ) {
       await revokeAccess(subscriptionId);
     }
