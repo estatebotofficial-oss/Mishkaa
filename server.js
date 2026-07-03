@@ -59,7 +59,7 @@ app.post('/api/create-subscription', async (req, res) => {
     });
 
     res.json({
-      authorization_link: result.authorization_details?.authorization_link,
+      subscription_session_id: result.subscription_session_id,
       subscription_id: subscriptionId
     });
   } catch (err) {
