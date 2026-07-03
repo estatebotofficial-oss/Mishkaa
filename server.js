@@ -48,6 +48,8 @@ app.post('/api/create-subscription', async (req, res) => {
       customerName: name
     });
 
+    console.log('Cashfree raw response:', JSON.stringify(result));
+
     // Save a pending record so we can match it up when the webhook fires
     await supabase.from('subscribers').insert({
       subscription_id: subscriptionId,
