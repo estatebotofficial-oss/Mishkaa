@@ -224,7 +224,7 @@
 <nav>
   <div class="wrap nav-inner">
     <div class="logo">Mishkaa</div>
-    <a href="https://t.me/+JdcTqvlNeU0yNTI1" class="nav-cta" target="_blank" rel="noopener">Subscribe</a>
+    <a href="#join" class="nav-cta">Subscribe</a>
   </div>
 </nav>
 
@@ -316,7 +316,7 @@
         <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Direct chat + custom requests</li>
         <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Cancel anytime</li>
       </ul>
-      <a href="https://t.me/+JdcTqvlNeU0yNTI1" class="btn btn-primary" target="_blank" rel="noopener">Subscribe now</a>
+      <button id="subscribeBtn" class="btn btn-primary" style="width:100%;justify-content:center;border:none;">Subscribe now</button>
       <p class="pcard-note">🔒 Secure &amp; private · Instant access</p>
     </div>
   </div>
@@ -377,12 +377,70 @@
   </div>
 </footer>
 
+<!-- ================= SUBSCRIBE MODAL ================= -->
+<div id="subModal" class="hidden" style="position:fixed;inset:0;z-index:300;background:rgba(6,4,5,.92);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:24px;">
+  <div style="width:100%;max-width:380px;background:linear-gradient(160deg,#241419,#110a0d 65%);border:1px solid rgba(230,201,168,.3);border-radius:20px;padding:30px 26px;">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:6px;color:var(--cream);">Almost there</h3>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:20px;">Enter your details to continue to secure payment.</p>
+    <input id="subEmail" type="email" placeholder="Email address" style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--line);background:#1a1115;color:var(--cream);font-family:'Poppins',sans-serif;font-size:14px;margin-bottom:12px;" />
+    <input id="subPhone" type="tel" placeholder="Phone number" style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--line);background:#1a1115;color:var(--cream);font-family:'Poppins',sans-serif;font-size:14px;margin-bottom:18px;" />
+    <p id="subError" style="color:#ff8a8a;font-size:12.5px;margin-bottom:12px;display:none;"></p>
+    <button id="subSubmit" class="btn btn-primary" style="width:100%;justify-content:center;border:none;">Continue to payment</button>
+    <button id="subCancel" style="width:100%;background:none;border:none;color:var(--muted);font-size:13px;margin-top:12px;padding:8px;cursor:pointer;">Cancel</button>
+  </div>
+</div>
+
 <script>
   // scroll reveal
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
   },{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // subscribe modal logic
+  const subModal = document.getElementById('subModal');
+  const subBtn = document.getElementById('subscribeBtn');
+  const subCancel = document.getElementById('subCancel');
+  const subSubmit = document.getElementById('subSubmit');
+  const subError = document.getElementById('subError');
+
+  subBtn.addEventListener('click', () => subModal.classList.remove('hidden'));
+  subCancel.addEventListener('click', () => subModal.classList.add('hidden'));
+
+  subSubmit.addEventListener('click', async () => {
+    const email = document.getElementById('subEmail').value.trim();
+    const phone = document.getElementById('subPhone').value.trim();
+    subError.style.display = 'none';
+
+    if (!email || !phone) {
+      subError.textContent = 'Please fill in both fields.';
+      subError.style.display = 'block';
+      return;
+    }
+
+    subSubmit.textContent = 'Please wait...';
+    subSubmit.disabled = true;
+
+    try {
+      const res = await fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, phone })
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.authorization_link) {
+        throw new Error(data.error || 'Something went wrong');
+      }
+
+      window.location.href = data.authorization_link;
+    } catch (err) {
+      subError.textContent = 'Could not start payment. Please try again.';
+      subError.style.display = 'block';
+      subSubmit.textContent = 'Continue to payment';
+      subSubmit.disabled = false;
+    }
+  });
 </script>
 </body>
 </html>
