@@ -66,9 +66,18 @@ async function setWebhook(url) {
   return res.json();
 }
 
+async function sendMessage(chatId, text) {
+  await fetch(`${TELEGRAM_API}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
+  });
+}
+
 module.exports = {
   generateInviteLink,
   revokeInviteLink,
   removeUserFromGroup,
-  setWebhook
+  setWebhook,
+  sendMessage
 };
