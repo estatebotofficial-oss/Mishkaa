@@ -110,6 +110,7 @@ app.post('/webhook/cashfree', async (req, res) => {
     const subscriptionId = event.data?.subscription?.subscription_id
       || event.data?.subscription_id;
 
+    console.log('Webhook FULL payload:', JSON.stringify(event));
     console.log('Webhook received:', eventType, subscriptionId);
 
     if (!subscriptionId) {
