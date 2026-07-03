@@ -13,6 +13,7 @@ app.use(express.static('public'));
 app.use(express.json({
   verify: (req, res, buf) => { req.rawBody = buf; }
 }));
+app.use(express.urlencoded({ extended: true }));
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -75,16 +76,81 @@ app.post('/api/create-subscription', async (req, res) => {
 // trusting the redirect alone.
 // ---------------------------------------------------------
 app.all('/subscription-return', (req, res) => {
+  const subscriptionId = req.body?.subscription_id || req.query?.subscription_id || '';
   res.send(`
     <html>
-      <body style="background:#0b0708;color:#f7efe9;font-family:sans-serif;text-align:center;padding:60px 20px;">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+          body{background:#0b0708;color:#f7efe9;font-family:sans-serif;text-align:center;padding:60px 20px;}
+          .btn{display:inline-block;margin-top:24px;padding:16px 36px;border-radius:999px;
+            background:linear-gradient(135deg,#e58aa5,#c8506f);color:#150a0e;font-weight:600;
+            text-decoration:none;font-size:16px;}
+          .spinner{margin:30px auto;width:34px;height:34px;border:3px solid rgba(229,138,165,.25);
+            border-top-color:#e58aa5;border-radius:50%;animation:spin 1s linear infinite;}
+          @keyframes spin{to{transform:rotate(360deg)}}
+        </style>
+      </head>
+      <body>
         <h2>Thank you!</h2>
-        <p>Your subscription is being confirmed. You'll receive your private
-        Telegram group invite link on your registered email/phone within a
-        minute or two.</p>
+        <p id="msg">Confirming your payment and preparing your invite link...</p>
+        <div class="spinner" id="spinner"></div>
+        <div id="linkBox" style="display:none;">
+          <a id="joinBtn" class="btn" href="#" target="_blank" rel="noopener">Join Private Group</a>
+        </div>
+        <script>
+          const subscriptionId = ${JSON.stringify(subscriptionId)};
+          const msg = document.getElementById('msg');
+          const spinner = document.getElementById('spinner');
+          const linkBox = document.getElementById('linkBox');
+          const joinBtn = document.getElementById('joinBtn');
+
+          async function checkStatus() {
+            if (!subscriptionId) {
+              msg.textContent = "We couldn't find your subscription reference. Please contact support.";
+              spinner.style.display = 'none';
+              return;
+            }
+            try {
+              const res = await fetch('/api/subscription-status/' + subscriptionId);
+              const data = await res.json();
+              if (data.status === 'active' && data.invite_link) {
+                msg.textContent = "You're in! Tap below to join the group.";
+                spinner.style.display = 'none';
+                joinBtn.href = data.invite_link;
+                linkBox.style.display = 'block';
+              } else {
+                setTimeout(checkStatus, 3000);
+              }
+            } catch (e) {
+              setTimeout(checkStatus, 3000);
+            }
+          }
+          checkStatus();
+        </script>
       </body>
     </html>
   `);
+});
+
+// ---------------------------------------------------------
+// Used by the return page to poll for the invite link becoming ready
+// ---------------------------------------------------------
+app.get('/api/subscription-status/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('subscribers')
+      .select('status, invite_link')
+      .eq('subscription_id', req.params.id)
+      .maybeSingle();
+
+    if (error || !data) {
+      return res.status(404).json({ status: 'pending' });
+    }
+    res.json({ status: data.status, invite_link: data.invite_link });
+  } catch (err) {
+    res.status(500).json({ status: 'pending' });
+  }
 });
 
 // ---------------------------------------------------------
@@ -169,7 +235,6 @@ async function grantOrRenewAccess(subscriptionId, event) {
   // Only generate a fresh invite link the first time (subscription just activated)
   if (existing.status !== 'active') {
     inviteLink = await telegram.generateInviteLink();
-    // TODO: send inviteLink to existing.customer_email / customer_phone
     console.log(`Invite link for ${existing.customer_email}: ${inviteLink}`);
   }
 
