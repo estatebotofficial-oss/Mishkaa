@@ -7,6 +7,9 @@ const telegram = require('./telegramBot');
 
 const app = express();
 
+// Serve the landing page (public/index.html) and any other static assets
+app.use(express.static('public'));
+
 app.use(express.json({
   verify: (req, res, buf) => { req.rawBody = buf; }
 }));
