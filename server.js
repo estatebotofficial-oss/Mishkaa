@@ -74,7 +74,7 @@ app.post('/api/create-subscription', async (req, res) => {
 // grant happens via webhook below, which is more reliable than
 // trusting the redirect alone.
 // ---------------------------------------------------------
-app.get('/subscription-return', (req, res) => {
+app.all('/subscription-return', (req, res) => {
   res.send(`
     <html>
       <body style="background:#0b0708;color:#f7efe9;font-family:sans-serif;text-align:center;padding:60px 20px;">
