@@ -76,6 +76,7 @@ app.post('/api/create-subscription', async (req, res) => {
 // trusting the redirect alone.
 // ---------------------------------------------------------
 app.all('/subscription-return', (req, res) => {
+  console.log('Return page hit — query:', JSON.stringify(req.query), 'body:', JSON.stringify(req.body));
   const subscriptionId = req.body?.subscription_id || req.query?.subscription_id || '';
   res.send(`
     <html>
