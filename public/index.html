@@ -204,6 +204,7 @@
   }
   :focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:6px}
 </style>
+<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 </head>
 <body>
 
@@ -429,11 +430,15 @@
       });
       const data = await res.json();
 
-      if (!res.ok || !data.authorization_link) {
+      if (!res.ok || !data.subscription_session_id) {
         throw new Error(data.error || 'Something went wrong');
       }
 
-      window.location.href = data.authorization_link;
+      const cashfree = Cashfree({ mode: "sandbox" }); // change to "production" when going live
+      cashfree.subscriptionsCheckout({
+        subsSessionId: data.subscription_session_id,
+        redirectTarget: "_self"
+      });
     } catch (err) {
       subError.textContent = 'Could not start payment. Please try again.';
       subError.style.display = 'block';
