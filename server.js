@@ -240,12 +240,25 @@ async function grantOrRenewAccess(subscriptionId, event) {
   const nextCycle = new Date(now);
   nextCycle.setDate(nextCycle.getDate() + 30); // grace window past next expected charge
 
+  // Atomically claim "first activation" — only one concurrent webhook call
+  // will succeed in flipping status from non-active to active. This
+  // prevents two near-simultaneous events (e.g. PAYMENT_SUCCESS and
+  // STATUS_CHANGED arriving together) from both generating invite links.
   let inviteLink = existing.invite_link;
 
-  // Only generate a fresh invite link the first time (subscription just activated)
   if (existing.status !== 'active') {
-    inviteLink = await telegram.generateInviteLink();
-    console.log(`Invite link for ${existing.customer_email}: ${inviteLink}`);
+    const { data: claimed } = await supabase
+      .from('subscribers')
+      .update({ status: 'active' })
+      .eq('subscription_id', subscriptionId)
+      .neq('status', 'active')
+      .select()
+      .maybeSingle();
+
+    if (claimed) {
+      inviteLink = await telegram.generateInviteLink();
+      console.log(`Invite link for ${existing.customer_email}: ${inviteLink}`);
+    }
   }
 
   await supabase
