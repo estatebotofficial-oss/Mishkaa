@@ -40,10 +40,11 @@ app.post('/api/create-subscription', async (req, res) => {
       return res.status(400).json({ error: 'email and phone are required' });
     }
 
-    const subscriptionId = `mishkaa_${Date.now()}`;
+    const orderId = `mishkaa_${Date.now()}`;
 
-    const result = await cashfree.createSubscription({
-      subscriptionId,
+    const result = await cashfree.createOrder({
+      orderId,
+      amount: Number(process.env.SUBSCRIPTION_AMOUNT || 499),
       customerEmail: email,
       customerPhone: phone,
       customerName: name
@@ -53,15 +54,15 @@ app.post('/api/create-subscription', async (req, res) => {
 
     // Save a pending record so we can match it up when the webhook fires
     await supabase.from('subscribers').insert({
-      subscription_id: subscriptionId,
+      subscription_id: orderId,
       customer_email: email,
       customer_phone: phone,
       status: 'pending'
     });
 
     res.json({
-      subscription_session_id: result.subscription_session_id,
-      subscription_id: subscriptionId
+      payment_session_id: result.payment_session_id,
+      subscription_id: orderId
     });
   } catch (err) {
     console.error('create-subscription error:', err);
@@ -77,7 +78,8 @@ app.post('/api/create-subscription', async (req, res) => {
 // ---------------------------------------------------------
 app.all('/subscription-return', (req, res) => {
   console.log('Return page hit — query:', JSON.stringify(req.query), 'body:', JSON.stringify(req.body));
-  const subscriptionId = req.body?.cf_subscriptionId || req.query?.cf_subscriptionId
+  const subscriptionId = req.query?.order_id || req.body?.order_id
+    || req.body?.cf_subscriptionId || req.query?.cf_subscriptionId
     || req.body?.subscription_id || req.query?.subscription_id || '';
   res.send(`
     <html>
@@ -183,6 +185,26 @@ app.post('/webhook/cashfree', async (req, res) => {
 
     const event = req.body;
     const eventType = event.type;
+
+    // One-time Order payment (Orders API) — this is what we use now
+    if (eventType === 'PAYMENT_SUCCESS_WEBHOOK') {
+      const orderId = event.data?.order?.order_id;
+      console.log('Webhook FULL payload:', JSON.stringify(event));
+      console.log('One-time payment success for order:', orderId);
+      if (orderId) {
+        await grantOrRenewAccess(orderId, event);
+      }
+      return res.status(200).send('OK');
+    }
+
+    if (eventType === 'PAYMENT_FAILED_WEBHOOK') {
+      const orderId = event.data?.order?.order_id;
+      console.log('Payment failed for order:', orderId);
+      // No need to revoke — a failed one-time payment never granted access
+      return res.status(200).send('OK');
+    }
+
+    // ------ Legacy Subscriptions API handling (kept for reference / future use) ------
     const subscriptionId = event.data?.subscription_details?.subscription_id
       || event.data?.subscription_id;
 
