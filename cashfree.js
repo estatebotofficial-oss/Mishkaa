@@ -87,8 +87,43 @@ async function cancelSubscription(subscriptionId) {
   return data;
 }
 
+/**
+ * Creates a one-time payment Order (not a recurring subscription).
+ * Returns a payment_session_id which the frontend uses with Cashfree's
+ * JS SDK checkout() to open the payment page.
+ */
+async function createOrder({ orderId, amount, customerEmail, customerPhone, customerName }) {
+  const body = {
+    order_id: orderId,
+    order_amount: amount,
+    order_currency: 'INR',
+    customer_details: {
+      customer_id: orderId,
+      customer_name: customerName || 'Subscriber',
+      customer_email: customerEmail,
+      customer_phone: customerPhone
+    },
+    order_meta: {
+      return_url: `${process.env.SUBSCRIPTION_RETURN_URL}?order_id={order_id}`
+    }
+  };
+
+  const res = await fetch(`${CF_BASE_URL}/orders`, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify(body)
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(`Cashfree createOrder error: ${JSON.stringify(data)}`);
+  }
+  return data; // contains payment_session_id, order_id
+}
+
 module.exports = {
   createSubscription,
   getSubscription,
-  cancelSubscription
+  cancelSubscription,
+  createOrder
 };
