@@ -431,13 +431,13 @@
       });
       const data = await res.json();
 
-      if (!res.ok || !data.subscription_session_id) {
+      if (!res.ok || !data.payment_session_id) {
         throw new Error(data.error || 'Something went wrong');
       }
 
-      const cashfree = Cashfree({ mode: "sandbox" }); // change to "production" when going live
-      cashfree.subscriptionsCheckout({
-        subsSessionId: data.subscription_session_id,
+      const cashfree = Cashfree({ mode: "production" }); // sandbox -> production when live
+      cashfree.checkout({
+        paymentSessionId: data.payment_session_id,
         redirectTarget: "_self"
       });
     } catch (err) {
