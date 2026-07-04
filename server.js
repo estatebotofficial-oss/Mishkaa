@@ -107,12 +107,15 @@ app.all('/subscription-return', (req, res) => {
           const linkBox = document.getElementById('linkBox');
           const joinBtn = document.getElementById('joinBtn');
 
+          let attempts = 0;
+
           async function checkStatus() {
             if (!subscriptionId) {
               msg.textContent = "We couldn't find your subscription reference. Please contact support.";
               spinner.style.display = 'none';
               return;
             }
+            attempts++;
             try {
               const res = await fetch('/api/subscription-status/' + subscriptionId);
               const data = await res.json();
@@ -121,12 +124,17 @@ app.all('/subscription-return', (req, res) => {
                 spinner.style.display = 'none';
                 joinBtn.href = data.invite_link;
                 linkBox.style.display = 'block';
-              } else {
-                setTimeout(checkStatus, 3000);
+                return;
               }
             } catch (e) {
-              setTimeout(checkStatus, 3000);
+              // ignore and retry
             }
+
+            if (attempts === 20) {
+              msg.innerHTML = "This is taking longer than usual. Your payment is safe — " +
+                "please keep this page open a little longer, or refresh in a minute.";
+            }
+            setTimeout(checkStatus, 3000);
           }
           checkStatus();
         </script>
