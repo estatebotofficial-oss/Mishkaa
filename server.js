@@ -174,7 +174,7 @@ app.post('/webhook/cashfree', async (req, res) => {
     const signature = req.headers['x-webhook-signature'];
     const timestamp = req.headers['x-webhook-timestamp'];
     const expectedSignature = crypto
-      .createHmac('sha256', process.env.CASHFREE_CLIENT_SECRET)
+      .createHmac('sha256', process.env.CASHFREE_WEBHOOK_SECRET || process.env.CASHFREE_CLIENT_SECRET)
       .update(timestamp + req.rawBody)
       .digest('base64');
 
