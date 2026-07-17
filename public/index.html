@@ -2,199 +2,386 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Mirikaa</title>
 <meta name="description" content="Private moments. Real connection."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{min-height:100%}
-  body{
-    min-height:100vh;
-    font-family:"DM Sans",system-ui,sans-serif;
-    font-weight:300;
-    color:#f5ede8;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:48px 20px;
-    position:relative;
-    overflow-x:hidden;
-    background:#1a0c10;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
 
-  body::before{
-    content:"";position:fixed;inset:0;z-index:0;
-    background:
-      radial-gradient(ellipse 800px 700px at 50% -10%, rgba(160,45,70,.28), transparent 55%),
-      radial-gradient(ellipse 500px 400px at 10% 60%, rgba(120,35,55,.15), transparent 60%),
-      radial-gradient(ellipse 400px 350px at 95% 85%, rgba(140,40,65,.12), transparent 60%),
-      #1a0c10;
-  }
-  body::after{
-    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
+body {
+  min-height: 100vh;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-weight: 300;
+  color: #f7e8ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 52px 20px;
+  padding-top: max(52px, env(safe-area-inset-top));
+  padding-bottom: max(52px, env(safe-area-inset-bottom));
+  position: relative;
+  overflow-x: hidden;
+  background: #160810;
+}
 
-  .page{
-    position:relative;z-index:1;
-    width:100%;max-width:400px;
-    display:flex;flex-direction:column;
-    align-items:center;
-  }
+/* ── Background: layered rose-crimson radial blooms ── */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 600px at 50% -5%,  rgba(180, 30, 65, .32), transparent 55%),
+    radial-gradient(ellipse 500px 450px at 5%  55%,  rgba(140, 20, 50, .18), transparent 60%),
+    radial-gradient(ellipse 450px 350px at 98% 80%,  rgba(200, 60, 90, .14), transparent 55%),
+    radial-gradient(ellipse 300px 300px at 60% 100%, rgba(160, 35, 70, .16), transparent 60%),
+    #160810;
+}
 
-  /* avatar */
-  .avatar-wrap{
-    position:relative;
-    width:108px;height:108px;
-    margin-bottom:18px;
-  }
-  .avatar-ring{
-    width:108px;height:108px;border-radius:50%;
-    padding:2.5px;
-    background:conic-gradient(from 0deg, rgba(200,90,120,.8), rgba(240,180,150,.5), rgba(200,90,120,.8));
-    box-shadow:0 0 0 3px rgba(180,60,90,.1), 0 20px 55px rgba(0,0,0,.6);
-    animation:spinRing 6s linear infinite;
-  }
-  @keyframes spinRing{to{transform:rotate(360deg)}}
-  .avatar{
-    width:100%;height:100%;border-radius:50%;
-    background-image:url('https://i.ibb.co/JjgZdn0h/ecea139b-f341-4189-84fa-1b36356558e9-Edited-20260717-031939-0000.jpg');
-    background-size:cover;background-position:center top;
-    border:2.5px solid #1a0c10;
-    position:absolute;inset:2.5px;width:calc(100% - 5px);height:calc(100% - 5px);border-radius:50%;
-  }
-  .live-pill{
-    position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
-    display:inline-flex;align-items:center;gap:5px;
-    background:rgba(26,12,16,.9);border:1px solid rgba(200,140,155,.2);
-    border-radius:999px;padding:3px 9px;
-    font-size:10px;color:rgba(220,180,190,.7);white-space:nowrap;
-    backdrop-filter:blur(6px);
-  }
-  .live-dot{
-    width:6px;height:6px;border-radius:50%;
-    background:#5ad17a;box-shadow:0 0 6px #5ad17a;
-    animation:blink 1.8s ease-in-out infinite;flex-shrink:0;
-  }
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+/* Subtle film-grain texture */
+body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 
-  /* name */
-  .name{
-    font-family:"Cormorant Garamond",serif;
-    font-size:2.8rem;font-weight:400;
-    color:#f5ede8;line-height:1;
-    letter-spacing:.5px;margin-bottom:6px;
-    text-align:center;
-  }
-  .bio{
-    font-family:"Cormorant Garamond",serif;
-    font-style:italic;font-size:1.05rem;
-    color:rgba(220,175,185,.55);
-    margin-bottom:30px;text-align:center;
-    line-height:1.5;
-  }
+/* Floating rose petals — pure CSS, no JS */
+.petals { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.petal {
+  position: absolute; top: -20px;
+  width: 8px; height: 10px; border-radius: 60% 40% 60% 40% / 50% 50% 50% 50%;
+  opacity: 0;
+  animation: petalDrift linear infinite;
+}
+.petal:nth-child(1)  { left:8%;   width:7px;  height:9px;  background:rgba(210,60,90,.18);  animation-duration:14s; animation-delay:0s;   }
+.petal:nth-child(2)  { left:22%;  width:9px;  height:11px; background:rgba(230,80,110,.14); animation-duration:11s; animation-delay:2.5s; }
+.petal:nth-child(3)  { left:38%;  width:6px;  height:8px;  background:rgba(200,50,80,.2);   animation-duration:16s; animation-delay:1s;   }
+.petal:nth-child(4)  { left:55%;  width:10px; height:12px; background:rgba(220,70,100,.12); animation-duration:12s; animation-delay:4s;   }
+.petal:nth-child(5)  { left:70%;  width:7px;  height:9px;  background:rgba(240,90,120,.16); animation-duration:15s; animation-delay:0.5s; }
+.petal:nth-child(6)  { left:84%;  width:8px;  height:10px; background:rgba(210,55,85,.18);  animation-duration:13s; animation-delay:3s;   }
+.petal:nth-child(7)  { left:14%;  width:6px;  height:8px;  background:rgba(230,75,105,.14); animation-duration:17s; animation-delay:6s;   }
+.petal:nth-child(8)  { left:46%;  width:9px;  height:11px; background:rgba(200,45,75,.2);   animation-duration:10s; animation-delay:7s;   }
+.petal:nth-child(9)  { left:91%;  width:7px;  height:9px;  background:rgba(240,85,115,.13); animation-duration:14s; animation-delay:2s;   }
+.petal:nth-child(10) { left:63%;  width:8px;  height:10px; background:rgba(215,60,90,.17);  animation-duration:18s; animation-delay:5s;   }
 
-  /* links */
-  .links{width:100%;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+@keyframes petalDrift {
+  0%   { transform: translateY(0)   rotate(0deg)   translateX(0);   opacity: 0; }
+  8%   { opacity: 1; }
+  90%  { opacity: .7; }
+  100% { transform: translateY(105vh) rotate(220deg) translateX(30px); opacity: 0; }
+}
 
-  /* featured CTA */
-  .btn-main{
-    width:100%;padding:0;border-radius:18px;
-    background:linear-gradient(145deg,#8b2a42,#6b1e32,#8b2a42);
-    background-size:200% 200%;
-    border:1px solid rgba(220,120,145,.25);
-    color:#f5ede8;
-    font-family:"DM Sans",sans-serif;
-    text-decoration:none;
-    display:flex;align-items:center;justify-content:space-between;
-    box-shadow:0 14px 40px rgba(110,30,50,.45), inset 0 1px 0 rgba(255,220,225,.08);
-    transition:transform .2s, box-shadow .2s;
-    cursor:pointer;
-    animation:gradShift 4s ease infinite;
-    overflow:hidden;
-    position:relative;
-  }
-  @keyframes gradShift{
-    0%,100%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-  }
-  .btn-main::before{
-    content:"";position:absolute;inset:0;
-    background:linear-gradient(135deg,rgba(255,200,215,.07),transparent 60%);
-    pointer-events:none;
-  }
-  .btn-main:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(110,30,50,.55)}
-  .btn-main:active{transform:scale(.985)}
-  .btn-main-inner{
-    display:flex;flex-direction:column;gap:4px;
-    padding:20px 22px;text-align:left;position:relative;z-index:1;
-  }
-  .btn-main-title{
-    font-size:15.5px;font-weight:500;color:#f5ede8;
-    display:flex;align-items:center;gap:8px;
-  }
-  .btn-main-sub{font-size:12px;color:rgba(240,210,218,.6);font-style:italic;font-family:"Cormorant Garamond",serif;font-size:13px;}
-  .btn-main-arr{
-    padding:20px 20px 20px 0;
-    font-size:20px;color:rgba(240,200,210,.5);
-    position:relative;z-index:1;
-    flex-shrink:0;
-  }
+/* ── Page wrapper ── */
+.page {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 390px;
+  display: flex; flex-direction: column;
+  align-items: center;
+}
 
-  /* regular links */
-  .btn-link{
-    width:100%;padding:14px 18px;border-radius:14px;
-    background:rgba(255,255,255,.03);
-    border:1px solid rgba(220,140,160,.1);
-    backdrop-filter:blur(6px);
-    color:#f5ede8;
-    font-family:"DM Sans",sans-serif;
-    text-decoration:none;
-    display:flex;align-items:center;justify-content:space-between;
-    transition:background .18s, border-color .18s, transform .15s;
-    cursor:pointer;
-  }
-  .btn-link:hover{background:rgba(255,255,255,.06);border-color:rgba(220,140,160,.22);transform:translateY(-1px)}
-  .btn-link:active{transform:scale(.985)}
-  .btn-link-left{display:flex;align-items:center;gap:11px}
-  .btn-link-icon{
-    width:32px;height:32px;border-radius:9px;flex-shrink:0;
-    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
-    display:flex;align-items:center;justify-content:center;
-  }
-  .btn-link-name{font-size:13.5px;color:#f5ede8;font-weight:400}
-  .btn-link-sub{font-size:11px;color:rgba(210,165,175,.45);margin-top:1px}
-  .btn-link-arr{color:rgba(210,155,170,.3);font-size:14px;transition:transform .15s,color .15s;flex-shrink:0}
-  .btn-link:hover .btn-link-arr{transform:translateX(3px);color:rgba(220,140,160,.55)}
+/* ── Avatar ── */
+.avatar-wrap {
+  position: relative;
+  width: 112px; height: 112px;
+  margin-bottom: 20px;
+}
 
-  /* divider */
-  .sep{width:1px;height:1px;margin:3px 0;background:transparent}
+/* Rotating conic gradient ring */
+.avatar-ring {
+  width: 112px; height: 112px;
+  border-radius: 50%;
+  padding: 2.5px;
+  background: conic-gradient(from 0deg,
+    rgba(220,55,85,.9),
+    rgba(255,140,165,.6),
+    rgba(200,30,65,.9),
+    rgba(255,110,145,.5),
+    rgba(220,55,85,.9)
+  );
+  box-shadow:
+    0 0 0 3px rgba(160,20,50,.15),
+    0 0 40px rgba(200,40,75,.25),
+    0 20px 60px rgba(0,0,0,.65);
+  animation: spinRing 5s linear infinite;
+}
+@keyframes spinRing { to { transform: rotate(360deg); } }
 
-  /* footer */
-  .foot{font-size:10.5px;color:rgba(200,155,165,.2);letter-spacing:.8px;text-align:center;text-transform:uppercase}
+.avatar-img {
+  position: absolute;
+  inset: 2.5px;
+  width: calc(100% - 5px);
+  height: calc(100% - 5px);
+  border-radius: 50%;
+  background-image: url('https://i.ibb.co/JjgZdn0h/ecea139b-f341-4189-84fa-1b36356558e9-Edited-20260717-031939-0000.jpg');
+  background-size: cover;
+  background-position: center top;
+  border: 2.5px solid #160810;
+}
 
-  @media(prefers-reduced-motion:reduce){
-    *{transition:none!important;animation:none!important}
-  }
+/* Soft outer glow pulse */
+.avatar-glow {
+  position: absolute; inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(210,45,80,.22), transparent 70%);
+  animation: glowPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: .6; transform: scale(1); }
+  50%       { opacity: 1;  transform: scale(1.08); }
+}
+
+.live-pill {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(22,8,16,.92);
+  border: 1px solid rgba(220,80,110,.2);
+  border-radius: 999px; padding: 3px 10px;
+  font-size: 10px; color: rgba(230,180,195,.65);
+  white-space: nowrap; backdrop-filter: blur(8px);
+}
+.live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #ff7a9a; box-shadow: 0 0 8px rgba(255,100,140,.8);
+  animation: blink 2s ease-in-out infinite; flex-shrink: 0;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+/* ── Name + bio ── */
+.name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 3rem; font-weight: 300;
+  font-style: italic;
+  color: #f7e8ed; line-height: 1;
+  letter-spacing: 1px; margin-bottom: 7px;
+  text-align: center;
+  text-shadow: 0 2px 30px rgba(200,40,75,.3);
+}
+
+.bio {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic; font-size: 1.05rem; font-weight: 300;
+  color: rgba(230,170,185,.5);
+  margin-bottom: 10px; text-align: center;
+  line-height: 1.55;
+}
+
+/* ── Mood indicator ── */
+.mood-row {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 28px;
+}
+.mood-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #ff7a9a; box-shadow: 0 0 8px rgba(255,100,140,.7);
+  animation: blink 2.2s ease-in-out infinite;
+}
+.mood-text {
+  font-size: 11px; color: rgba(230,170,185,.45);
+  letter-spacing: .6px; text-transform: uppercase;
+}
+
+/* ── Music toggle ── */
+.music-btn {
+  position: fixed; top: max(18px, env(safe-area-inset-top)); right: 18px;
+  z-index: 100;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(22,8,16,.75);
+  border: 1px solid rgba(220,80,110,.2);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color .2s, background .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.music-btn:hover { border-color: rgba(220,80,110,.45); background: rgba(30,10,20,.85); }
+.music-btn svg { transition: opacity .2s; }
+.music-btn.playing { border-color: rgba(220,80,110,.5); }
+
+/* Spinning bars when playing */
+.bars {
+  display: flex; align-items: flex-end; gap: 2px; height: 14px;
+}
+.bar {
+  width: 3px; border-radius: 2px;
+  background: rgba(230,100,130,.8);
+  animation: none;
+  height: 4px;
+}
+.music-btn.playing .bar:nth-child(1) { animation: barDance 0.8s ease-in-out infinite; }
+.music-btn.playing .bar:nth-child(2) { animation: barDance 0.8s ease-in-out -.2s infinite; }
+.music-btn.playing .bar:nth-child(3) { animation: barDance 0.8s ease-in-out -.4s infinite; }
+.music-btn.playing .bar:nth-child(4) { animation: barDance 0.8s ease-in-out -.1s infinite; }
+@keyframes barDance {
+  0%,100% { height: 4px; }
+  50%      { height: 13px; }
+}
+
+/* ── Links ── */
+.links { width: 100%; display: flex; flex-direction: column; gap: 9px; margin-bottom: 28px; }
+
+/* Main CTA */
+.btn-main {
+  width: 100%; border-radius: 18px;
+  background: linear-gradient(145deg, #8b1a38 0%, #6b1228 50%, #9b2040 100%);
+  background-size: 200% 200%;
+  border: 1px solid rgba(240,100,135,.2);
+  color: #f7e8ed;
+  font-family: "DM Sans", sans-serif;
+  text-decoration: none;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow:
+    0 12px 40px rgba(120,15,45,.55),
+    inset 0 1px 0 rgba(255,200,215,.1),
+    inset 0 -1px 0 rgba(0,0,0,.2);
+  transition: transform .2s, box-shadow .2s;
+  cursor: pointer;
+  animation: gradShift 5s ease infinite;
+  overflow: hidden;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+@keyframes gradShift {
+  0%,100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+/* Shimmer sweep */
+.btn-main::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(110deg,
+    transparent 20%,
+    rgba(255,200,215,.09) 45%,
+    rgba(255,200,215,.13) 50%,
+    rgba(255,200,215,.09) 55%,
+    transparent 80%
+  );
+  animation: shimmer 4s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  60%,100% { transform: translateX(150%); }
+}
+.btn-main:hover  { transform: translateY(-2px); box-shadow: 0 18px 50px rgba(140,20,55,.6), inset 0 1px 0 rgba(255,200,215,.12); }
+.btn-main:active { transform: scale(.985); }
+
+.btn-main-inner {
+  display: flex; flex-direction: column; gap: 5px;
+  padding: 22px 22px; text-align: left; position: relative; z-index: 1;
+}
+.btn-main-title {
+  font-size: 15px; font-weight: 500; color: #f7e8ed;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-main-sub {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic; font-size: 13.5px;
+  color: rgba(245,200,215,.6);
+}
+.btn-main-arr {
+  padding: 22px 20px 22px 0;
+  font-size: 18px; color: rgba(245,180,200,.4);
+  position: relative; z-index: 1; flex-shrink: 0;
+  transition: transform .2s, color .2s;
+}
+.btn-main:hover .btn-main-arr { transform: translateX(4px); color: rgba(245,180,200,.7); }
+
+/* Regular links */
+.btn-link {
+  width: 100%; padding: 14px 16px; border-radius: 14px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(220,80,110,.09);
+  backdrop-filter: blur(8px);
+  color: #f7e8ed;
+  font-family: "DM Sans", sans-serif;
+  text-decoration: none;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background .18s, border-color .18s, transform .15s;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-link:hover  { background: rgba(255,255,255,.05); border-color: rgba(220,80,110,.2); transform: translateY(-1px); }
+.btn-link:active { transform: scale(.985); }
+
+.btn-link-left  { display: flex; align-items: center; gap: 12px; }
+.btn-link-icon  {
+  width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(220,55,85,.08);
+  border: 1px solid rgba(220,80,110,.1);
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-link-name  { font-size: 13.5px; color: #f7e8ed; font-weight: 400; }
+.btn-link-sub   { font-size: 11px; color: rgba(220,160,175,.4); margin-top: 1px; }
+.btn-link-arr   { color: rgba(220,100,130,.25); font-size: 14px; transition: transform .15s, color .15s; flex-shrink: 0; }
+.btn-link:hover .btn-link-arr { transform: translateX(3px); color: rgba(230,100,130,.55); }
+
+/* ── Footer ── */
+.foot {
+  font-size: 10px; color: rgba(200,130,155,.18);
+  letter-spacing: 1px; text-align: center;
+  text-transform: uppercase;
+}
+
+/* ── Rose petal divider ornament ── */
+.ornament {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; margin: 2px 0 10px;
+}
+.ornament-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,55,85,.18), transparent);
+}
+.ornament-center { font-size: 12px; opacity: .3; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
 </style>
 </head>
 <body>
+
+<!-- Floating petals -->
+<div class="petals" aria-hidden="true">
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div>
+</div>
+
+<!-- Ambient music toggle -->
+<button class="music-btn" id="musicBtn" aria-label="Toggle ambient music" title="Ambient music">
+  <div class="bars">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+</button>
+
+<!-- Hidden audio — soft ambient/lo-fi tone via Web Audio API (no external file needed) -->
 <div class="page">
 
   <!-- Avatar -->
   <div class="avatar-wrap">
+    <div class="avatar-glow"></div>
     <div class="avatar-ring">
-      <div class="avatar"></div>
+      <div class="avatar-img"></div>
     </div>
-    <div class="live-pill"><span class="live-dot"></span> online now</div>
+    <div class="live-pill">
+      <span class="live-dot"></span> online now
+    </div>
   </div>
 
   <!-- Name + bio -->
   <h1 class="name">Mirikaa</h1>
   <p class="bio">"For those who want to get closer."</p>
+
+  <div class="mood-row">
+    <span class="mood-dot"></span>
+    <span class="mood-text">accepting new admirers</span>
+  </div>
 
   <!-- Links -->
   <div class="links">
@@ -208,13 +395,21 @@
       <div class="btn-main-arr">→</div>
     </a>
 
-    <div class="sep"></div>
+    <div class="ornament" aria-hidden="true">
+      <div class="ornament-line"></div>
+      <div class="ornament-center">🌹</div>
+      <div class="ornament-line"></div>
+    </div>
 
     <!-- Instagram -->
     <a href="https://www.instagram.com/its.mishkaaaaa?igsh=MTBsbDk5MHM2YzJpMQ==" target="_blank" rel="noopener" class="btn-link">
       <div class="btn-link-left">
         <div class="btn-link-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(220,140,160,.65)" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="rgba(220,140,160,.65)" stroke="none"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(230,100,130,.6)" stroke-width="1.8">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="5"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="rgba(230,100,130,.6)" stroke="none"/>
+          </svg>
         </div>
         <div>
           <div class="btn-link-name">Instagram</div>
@@ -228,7 +423,10 @@
     <a href="https://www.threads.com/@mirikaa.vibes" target="_blank" rel="noopener" class="btn-link">
       <div class="btn-link-left">
         <div class="btn-link-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(220,140,160,.65)" stroke-width="1.8"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M8 12a4 4 0 108 0 4 4 0 00-8 0"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(230,100,130,.6)" stroke-width="1.8">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+            <path d="M8.5 15.5c1 1 3.5 1.5 5-.5s1.5-5-.5-6.5S8 8 7.5 10s1 5 4.5 5"/>
+          </svg>
         </div>
         <div>
           <div class="btn-link-name">Threads</div>
@@ -242,7 +440,13 @@
     <a href="https://www.reddit.com/u/mishka_vibes/s/GtGfNyKCiR" target="_blank" rel="noopener" class="btn-link">
       <div class="btn-link-left">
         <div class="btn-link-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(220,140,160,.65)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M17 12a2 2 0 00-2-2 2 2 0 00-1.4.6C12.8 10.2 12.4 10 12 10s-.8.2-1.6.6A2 2 0 007 12a2 2 0 002 2h6a2 2 0 002-2z"/><path d="M9 16c.8.5 1.9.8 3 .8s2.2-.3 3-.8"/><circle cx="16" cy="7" r="1.2" fill="rgba(220,140,160,.65)" stroke="none"/><path d="M12 8l3.5-1.5"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(230,100,130,.6)" stroke-width="1.8">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M17 12a2 2 0 00-3.4-1.4C12.8 10.2 12.4 10 12 10s-.8.2-1.6.6A2 2 0 007 12c0 1.1.9 2 2 2h6a2 2 0 002-2z"/>
+            <path d="M9 16c.8.5 1.9.8 3 .8s2.2-.3 3-.8"/>
+            <circle cx="16" cy="7" r="1.2" fill="rgba(230,100,130,.6)" stroke="none"/>
+            <path d="M12 8l3.5-1.5"/>
+          </svg>
         </div>
         <div>
           <div class="btn-link-name">Reddit</div>
@@ -255,7 +459,59 @@
   </div>
 
   <div class="foot">mirikaa · 18+</div>
-
 </div>
+
+<script>
+// ── Ambient music via Web Audio API ───────────────────────
+// No external file needed — generates a soft, dreamy pad tone
+let ctx = null, gainNode = null, oscillators = [], playing = false;
+const btn = document.getElementById("musicBtn");
+
+function buildAmbience() {
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  gainNode = ctx.createGain();
+  gainNode.gain.setValueAtTime(0, ctx.currentTime);
+  gainNode.connect(ctx.destination);
+
+  // Soft pad: layered sine waves — a minor 9th chord feel
+  const freqs = [110, 138.6, 164.8, 220, 246.9, 329.6];
+  oscillators = freqs.map(freq => {
+    const osc = ctx.createOscillator();
+    const oscGain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    // Gentle vibrato
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    lfo.frequency.value = 0.25 + Math.random() * 0.1;
+    lfoGain.gain.value = 0.4;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc.frequency);
+    lfo.start();
+    oscGain.gain.value = 0.04 + Math.random() * 0.025;
+    osc.connect(oscGain);
+    oscGain.connect(gainNode);
+    osc.start();
+    return osc;
+  });
+}
+
+function fadeIn()  { gainNode.gain.cancelScheduledValues(ctx.currentTime); gainNode.gain.setValueAtTime(gainNode.gain.value, ctx.currentTime); gainNode.gain.linearRampToValueAtTime(1, ctx.currentTime + 2); }
+function fadeOut() { gainNode.gain.cancelScheduledValues(ctx.currentTime); gainNode.gain.setValueAtTime(gainNode.gain.value, ctx.currentTime); gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5); }
+
+btn.addEventListener("click", async () => {
+  if (!ctx) buildAmbience();
+  if (ctx.state === "suspended") await ctx.resume();
+
+  playing = !playing;
+  if (playing) {
+    fadeIn();
+    btn.classList.add("playing");
+  } else {
+    fadeOut();
+    btn.classList.remove("playing");
+  }
+});
+</script>
 </body>
 </html>
