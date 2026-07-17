@@ -1,422 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- ============ EDIT: model name + title ============ -->
-<title>Mirikaa — Exclusive Access</title>
-<meta name="description" content="Exclusive photos, private moments, daily posts. Subscribe for the full experience." />
-<meta property="og:title" content="Mirikaa — Exclusive Access" />
-<meta property="og:description" content="The one you keep coming back to. Subscribe for the full experience." />
-<meta property="og:type" content="website" />
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Poppins:wght@300;400;500;600&family=Sacramento&display=swap" rel="stylesheet" />
-
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mirikaa</title>
+<meta name="description" content="Private moments. Real connection."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root{
-    --bg:#0b0708;
-    --bg2:#150e11;
-    --panel:#1a1115;
-    --rose:#e58aa5;
-    --rose-deep:#c8506f;
-    --champ:#e6c9a8;
-    --cream:#f7efe9;
-    --muted:#a08388;
-    --line:rgba(229,138,165,.14);
-    --radius:20px;
-  }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  html,body{min-height:100%}
   body{
-    background:var(--bg);color:var(--cream);
-    font-family:"Poppins",system-ui,sans-serif;font-weight:300;line-height:1.65;
-    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+    min-height:100vh;
+    font-family:"DM Sans",system-ui,sans-serif;
+    font-weight:300;
+    color:#f5ede8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 20px;
+    position:relative;
+    overflow-x:hidden;
+    background:#1a0c10;
   }
-  a{color:inherit;text-decoration:none}
-  .wrap{width:100%;max-width:940px;margin:0 auto;padding:0 22px}
 
   body::before{
-    content:"";position:fixed;inset:0;z-index:-2;
+    content:"";position:fixed;inset:0;z-index:0;
     background:
-      radial-gradient(720px 520px at 80% -10%, rgba(200,80,111,.20), transparent 60%),
-      radial-gradient(620px 520px at 3% 22%, rgba(229,138,165,.09), transparent 62%),
-      var(--bg);
+      radial-gradient(ellipse 800px 700px at 50% -10%, rgba(160,45,70,.28), transparent 55%),
+      radial-gradient(ellipse 500px 400px at 10% 60%, rgba(120,35,55,.15), transparent 60%),
+      radial-gradient(ellipse 400px 350px at 95% 85%, rgba(140,40,65,.12), transparent 60%),
+      #1a0c10;
   }
   body::after{
-    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.035;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
-  .reveal.in{opacity:1;transform:none}
+  .page{
+    position:relative;z-index:1;
+    width:100%;max-width:400px;
+    display:flex;flex-direction:column;
+    align-items:center;
+  }
 
-  #gate{position:fixed;inset:0;z-index:200;background:rgba(6,4,5,.95);
-    backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
-  #gate .box{max-width:390px}
-  #gate .mark{font-family:"Sacramento",cursive;font-size:46px;color:var(--rose);line-height:1}
-  #gate h2{font-family:"Playfair Display",serif;font-weight:500;font-size:1.5rem;margin:16px 0 10px}
-  #gate p{color:var(--muted);font-size:.9rem;margin-bottom:26px}
-  #gate .g-actions{display:flex;flex-direction:column;gap:12px}
-  .gate-yes{background:linear-gradient(135deg,var(--rose),var(--rose-deep));color:#150a0e;font-weight:500;
-    padding:15px;border-radius:999px;border:none;cursor:pointer;font-size:15px;transition:.2s}
-  .gate-yes:hover{filter:brightness(1.08)}
-  .gate-no{color:var(--muted);font-size:13px;padding:8px}
-  .hidden{display:none!important}
-
-  nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(12px);
-    background:rgba(11,7,8,.72);border-bottom:1px solid var(--line)}
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px}
-  .logo{font-family:"Sacramento",cursive;font-size:29px;color:var(--rose);line-height:1}
-  .nav-cta{font-size:13px;font-weight:500;padding:9px 20px;border-radius:999px;
-    background:linear-gradient(135deg,var(--rose),var(--rose-deep));color:#150a0e;transition:.2s}
-  .nav-cta:hover{filter:brightness(1.08);transform:translateY(-1px)}
-
-  header.hero{padding:54px 0 46px;text-align:center}
-  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:3px;text-transform:uppercase;
-    color:var(--rose);border:1px solid var(--line);padding:7px 16px;border-radius:999px;margin-bottom:22px}
-  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:#5ad17a;box-shadow:0 0 8px #5ad17a}
-  .portrait{
-    width:min(330px,80vw);aspect-ratio:3/4;margin:0 auto 26px;border-radius:24px;position:relative;
-    background:linear-gradient(160deg,#2a1a20,#140c0f 70%);
-    border:1px solid rgba(230,201,168,.22);
-    box-shadow:0 34px 90px rgba(0,0,0,.6), inset 0 1px 0 rgba(247,239,233,.06);
-    overflow:hidden;display:flex;align-items:flex-end;justify-content:center;
+  /* avatar */
+  .avatar-wrap{
+    position:relative;
+    width:108px;height:108px;
+    margin-bottom:18px;
+  }
+  .avatar-ring{
+    width:108px;height:108px;border-radius:50%;
+    padding:2.5px;
+    background:conic-gradient(from 0deg, rgba(200,90,120,.8), rgba(240,180,150,.5), rgba(200,90,120,.8));
+    box-shadow:0 0 0 3px rgba(180,60,90,.1), 0 20px 55px rgba(0,0,0,.6);
+    animation:spinRing 6s linear infinite;
+  }
+  @keyframes spinRing{to{transform:rotate(360deg)}}
+  .avatar{
+    width:100%;height:100%;border-radius:50%;
     background-image:url('https://i.ibb.co/JjgZdn0h/ecea139b-f341-4189-84fa-1b36356558e9-Edited-20260717-031939-0000.jpg');
     background-size:cover;background-position:center top;
+    border:2.5px solid #1a0c10;
+    position:absolute;inset:2.5px;width:calc(100% - 5px);height:calc(100% - 5px);border-radius:50%;
   }
-  .portrait .ph{color:var(--muted);font-size:12px;letter-spacing:1px;padding-bottom:16px;opacity:.55}
-  .portrait::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(11,7,8,.72),transparent 45%)}
-  .name{font-family:"Sacramento",cursive;font-size:clamp(3.6rem,13vw,5.8rem);color:var(--cream);line-height:.9;margin-bottom:6px}
-  .tagline{font-family:"Playfair Display",serif;font-style:italic;font-weight:500;font-size:clamp(1.3rem,4vw,1.95rem);color:var(--champ)}
-  .hero-sub{max-width:470px;margin:16px auto 0;color:var(--muted);font-size:1rem}
-  .hero-cta{margin-top:30px}
-  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:500;font-size:15px;
-    padding:16px 36px;border-radius:999px;transition:.22s;cursor:pointer;border:none}
-  .btn-primary{background:linear-gradient(135deg,var(--rose),var(--rose-deep));color:#150a0e;
-    box-shadow:0 12px 34px rgba(200,80,111,.32)}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 46px rgba(200,80,111,.44)}
-  .hero-count{margin-top:18px;font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
-
-  section{padding:52px 0}
-  .sec-head{text-align:center;margin-bottom:36px}
-  .sec-eyebrow{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--rose);margin-bottom:12px}
-  h2{font-family:"Playfair Display",serif;font-weight:500;font-size:clamp(1.7rem,4.6vw,2.5rem);line-height:1.12}
-  h2 em{font-style:italic;color:var(--rose)}
-
-  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  .tile{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;cursor:pointer;
-    background:linear-gradient(150deg,#2a1a20,#150c10);border:1px solid var(--line)}
-  .tile .blur{position:absolute;inset:0;background-size:cover;background-position:center;
-    filter:blur(6px) brightness(.85);transform:scale(1.1)}
-  .tile .lock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-    background:rgba(11,7,8,.38);transition:.3s}
-  .tile:hover .lock{background:rgba(11,7,8,.14)}
-  .tile .lock span{font-size:11px;letter-spacing:1px;color:var(--cream);opacity:.85}
-  .gallery-cta{text-align:center;margin-top:28px}
-
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .step{background:linear-gradient(180deg,var(--bg2),transparent);border:1px solid var(--line);
-    border-radius:16px;padding:26px 20px;text-align:center}
-  .step .n{width:40px;height:40px;margin:0 auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--rose);border:1px solid var(--rose)}
-  .step h3{font-weight:500;font-size:1.05rem;color:var(--cream);margin-bottom:6px}
-  .step p{color:var(--muted);font-size:.9rem}
-
-  .perks{max-width:540px;margin:0 auto;display:flex;flex-direction:column;gap:2px}
-  .perk{display:flex;align-items:center;gap:14px;padding:16px 4px;border-bottom:1px solid var(--line)}
-  .perk svg{flex-shrink:0}
-  .perk b{font-weight:500;color:var(--cream)}
-  .perk small{color:var(--muted);font-size:.86rem;display:block;font-weight:300}
-
-  .price-sec{text-align:center}
-  .pcard{max-width:390px;margin:0 auto;position:relative;border-radius:22px;padding:36px 30px 30px;text-align:left;
-    background:linear-gradient(160deg,#241419,#110a0d 65%);
-    border:1px solid rgba(230,201,168,.3);
-    box-shadow:0 34px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(247,239,233,.08);overflow:hidden}
-  .pcard::after{content:"";position:absolute;top:-60%;left:-30%;width:55%;height:220%;
-    background:linear-gradient(90deg,transparent,rgba(230,201,168,.13),transparent);
-    transform:rotate(18deg);animation:shine 6s ease-in-out infinite}
-  @keyframes shine{0%,62%{left:-40%}100%{left:130%}}
-  .pcard-badge{position:absolute;top:16px;right:16px;z-index:3;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
-    background:rgba(90,209,122,.14);color:#7fe39a;padding:5px 11px;border-radius:999px;border:1px solid rgba(90,209,122,.3)}
-  .pcard-tier{position:relative;z-index:2;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--rose)}
-  .pcard .price{position:relative;z-index:2;font-family:"Playfair Display",serif;margin:16px 0 4px}
-  .pcard .price .amt{font-size:3.1rem;font-weight:600}
-  .pcard .price .per{font-family:"Poppins",sans-serif;color:var(--muted);font-size:1rem;font-weight:300}
-  .pcard .price .old{font-family:"Poppins",sans-serif;color:var(--muted);font-size:1rem;font-weight:300;text-decoration:line-through;margin-left:8px}
-  .pcard .price-note{position:relative;z-index:2;font-size:12px;color:var(--muted);margin-bottom:20px}
-  .pcard ul{list-style:none;position:relative;z-index:2;margin:20px 0 24px}
-  .pcard li{display:flex;gap:11px;padding:8px 0;font-size:.95rem}
-  .pcard .btn-primary{position:relative;z-index:2;width:100%;justify-content:center}
-  .pcard-note{position:relative;z-index:2;text-align:center;margin-top:14px;font-size:12px;color:var(--muted)}
-
-  .quotes{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:720px;margin:0 auto}
-  .q{background:linear-gradient(180deg,var(--bg2),transparent);border:1px solid var(--line);border-radius:16px;padding:24px}
-  .q .stars{color:var(--rose);letter-spacing:2px;font-size:13px;margin-bottom:10px}
-  .q p{font-family:"Playfair Display",serif;font-style:italic;font-size:1.02rem;color:var(--cream)}
-  .q .by{margin-top:12px;font-size:12px;color:var(--muted)}
-
-  .faq{max-width:680px;margin:0 auto}
-  details{border-bottom:1px solid var(--line)}
-  summary{list-style:none;cursor:pointer;padding:18px 4px;display:flex;justify-content:space-between;
-    align-items:center;gap:16px;font-weight:400;font-size:1.02rem;color:var(--cream)}
-  summary::-webkit-details-marker{display:none}
-  summary .plus{color:var(--rose);font-size:22px;transition:.25s;line-height:1}
-  details[open] summary .plus{transform:rotate(45deg)}
-  details .a{color:var(--muted);padding:0 4px 20px;font-size:.94rem}
-
-  .socials{text-align:center}
-  .social-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
-  .social-row a{border:1px solid var(--line);border-radius:999px;padding:11px 22px;font-size:14px;color:var(--cream);transition:.2s}
-  .social-row a:hover{border-color:var(--rose);color:var(--rose);transform:translateY(-1px)}
-  footer{border-top:1px solid var(--line);padding:34px 0;text-align:center;color:var(--muted);font-size:12.5px}
-  footer .logo{font-size:34px;margin-bottom:10px}
-  footer a{color:var(--rose)}
-
-  @media(max-width:640px){
-    .gallery{grid-template-columns:repeat(2,1fr)}
-    .steps{grid-template-columns:1fr}
-    .quotes{grid-template-columns:1fr}
-    section{padding:44px 0}
-    .nav-cta{padding:8px 16px}
+  .live-pill{
+    position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+    display:inline-flex;align-items:center;gap:5px;
+    background:rgba(26,12,16,.9);border:1px solid rgba(200,140,155,.2);
+    border-radius:999px;padding:3px 9px;
+    font-size:10px;color:rgba(220,180,190,.7);white-space:nowrap;
+    backdrop-filter:blur(6px);
   }
+  .live-dot{
+    width:6px;height:6px;border-radius:50%;
+    background:#5ad17a;box-shadow:0 0 6px #5ad17a;
+    animation:blink 1.8s ease-in-out infinite;flex-shrink:0;
+  }
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* name */
+  .name{
+    font-family:"Cormorant Garamond",serif;
+    font-size:2.8rem;font-weight:400;
+    color:#f5ede8;line-height:1;
+    letter-spacing:.5px;margin-bottom:6px;
+    text-align:center;
+  }
+  .bio{
+    font-family:"Cormorant Garamond",serif;
+    font-style:italic;font-size:1.05rem;
+    color:rgba(220,175,185,.55);
+    margin-bottom:30px;text-align:center;
+    line-height:1.5;
+  }
+
+  /* links */
+  .links{width:100%;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+
+  /* featured CTA */
+  .btn-main{
+    width:100%;padding:0;border-radius:18px;
+    background:linear-gradient(145deg,#8b2a42,#6b1e32,#8b2a42);
+    background-size:200% 200%;
+    border:1px solid rgba(220,120,145,.25);
+    color:#f5ede8;
+    font-family:"DM Sans",sans-serif;
+    text-decoration:none;
+    display:flex;align-items:center;justify-content:space-between;
+    box-shadow:0 14px 40px rgba(110,30,50,.45), inset 0 1px 0 rgba(255,220,225,.08);
+    transition:transform .2s, box-shadow .2s;
+    cursor:pointer;
+    animation:gradShift 4s ease infinite;
+    overflow:hidden;
+    position:relative;
+  }
+  @keyframes gradShift{
+    0%,100%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+  }
+  .btn-main::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(255,200,215,.07),transparent 60%);
+    pointer-events:none;
+  }
+  .btn-main:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(110,30,50,.55)}
+  .btn-main:active{transform:scale(.985)}
+  .btn-main-inner{
+    display:flex;flex-direction:column;gap:4px;
+    padding:20px 22px;text-align:left;position:relative;z-index:1;
+  }
+  .btn-main-title{
+    font-size:15.5px;font-weight:500;color:#f5ede8;
+    display:flex;align-items:center;gap:8px;
+  }
+  .btn-main-sub{font-size:12px;color:rgba(240,210,218,.6);font-style:italic;font-family:"Cormorant Garamond",serif;font-size:13px;}
+  .btn-main-arr{
+    padding:20px 20px 20px 0;
+    font-size:20px;color:rgba(240,200,210,.5);
+    position:relative;z-index:1;
+    flex-shrink:0;
+  }
+
+  /* regular links */
+  .btn-link{
+    width:100%;padding:14px 18px;border-radius:14px;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(220,140,160,.1);
+    backdrop-filter:blur(6px);
+    color:#f5ede8;
+    font-family:"DM Sans",sans-serif;
+    text-decoration:none;
+    display:flex;align-items:center;justify-content:space-between;
+    transition:background .18s, border-color .18s, transform .15s;
+    cursor:pointer;
+  }
+  .btn-link:hover{background:rgba(255,255,255,.06);border-color:rgba(220,140,160,.22);transform:translateY(-1px)}
+  .btn-link:active{transform:scale(.985)}
+  .btn-link-left{display:flex;align-items:center;gap:11px}
+  .btn-link-icon{
+    width:32px;height:32px;border-radius:9px;flex-shrink:0;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .btn-link-name{font-size:13.5px;color:#f5ede8;font-weight:400}
+  .btn-link-sub{font-size:11px;color:rgba(210,165,175,.45);margin-top:1px}
+  .btn-link-arr{color:rgba(210,155,170,.3);font-size:14px;transition:transform .15s,color .15s;flex-shrink:0}
+  .btn-link:hover .btn-link-arr{transform:translateX(3px);color:rgba(220,140,160,.55)}
+
+  /* divider */
+  .sep{width:1px;height:1px;margin:3px 0;background:transparent}
+
+  /* footer */
+  .foot{font-size:10.5px;color:rgba(200,155,165,.2);letter-spacing:.8px;text-align:center;text-transform:uppercase}
+
   @media(prefers-reduced-motion:reduce){
-    .pcard::after{animation:none}*{scroll-behavior:auto}
-    .reveal{opacity:1;transform:none;transition:none}
+    *{transition:none!important;animation:none!important}
   }
-  :focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:6px}
 </style>
-<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 </head>
 <body>
+<div class="page">
 
-<div id="gate">
-  <div class="box">
-    <div class="mark">Mirikaa</div>
-    <h2>Before you come in…</h2>
-    <p>This page is intended for adults only. By entering, you confirm that you are 18 years or older.</p>
-    <div class="g-actions">
-      <button class="gate-yes" onclick="document.getElementById('gate').classList.add('hidden')">I'm 18 or older — Enter</button>
-      <a class="gate-no" href="https://www.google.com">Take me back</a>
+  <!-- Avatar -->
+  <div class="avatar-wrap">
+    <div class="avatar-ring">
+      <div class="avatar"></div>
     </div>
+    <div class="live-pill"><span class="live-dot"></span> online now</div>
   </div>
+
+  <!-- Name + bio -->
+  <h1 class="name">Mirikaa</h1>
+  <p class="bio">"For those who want to get closer."</p>
+
+  <!-- Links -->
+  <div class="links">
+
+    <!-- Main CTA -->
+    <a href="https://www.fanvue.com/mirikaa" target="_blank" rel="noopener" class="btn-main">
+      <div class="btn-main-inner">
+        <div class="btn-main-title">🔒 Join my private space</div>
+        <div class="btn-main-sub">Private moments. Real connection.</div>
+      </div>
+      <div class="btn-main-arr">→</div>
+    </a>
+
+    <div class="sep"></div>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/its.mishkaaaaa?igsh=MTBsbDk5MHM2YzJpMQ==" target="_blank" rel="noopener" class="btn-link">
+      <div class="btn-link-left">
+        <div class="btn-link-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(220,140,160,.65)" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="rgba(220,140,160,.65)" stroke="none"/></svg>
+        </div>
+        <div>
+          <div class="btn-link-name">Instagram</div>
+          <div class="btn-link-sub">@its.mishkaaaaa</div>
+        </div>
+      </div>
+      <span class="btn-link-arr">→</span>
+    </a>
+
+    <!-- Threads -->
+    <a href="https://www.threads.com/@mirikaa.vibes" target="_blank" rel="noopener" class="btn-link">
+      <div class="btn-link-left">
+        <div class="btn-link-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(220,140,160,.65)" stroke-width="1.8"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M8 12a4 4 0 108 0 4 4 0 00-8 0"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+        </div>
+        <div>
+          <div class="btn-link-name">Threads</div>
+          <div class="btn-link-sub">@mirikaa.vibes</div>
+        </div>
+      </div>
+      <span class="btn-link-arr">→</span>
+    </a>
+
+    <!-- Reddit -->
+    <a href="https://www.reddit.com/u/mishka_vibes/s/GtGfNyKCiR" target="_blank" rel="noopener" class="btn-link">
+      <div class="btn-link-left">
+        <div class="btn-link-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(220,140,160,.65)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M17 12a2 2 0 00-2-2 2 2 0 00-1.4.6C12.8 10.2 12.4 10 12 10s-.8.2-1.6.6A2 2 0 007 12a2 2 0 002 2h6a2 2 0 002-2z"/><path d="M9 16c.8.5 1.9.8 3 .8s2.2-.3 3-.8"/><circle cx="16" cy="7" r="1.2" fill="rgba(220,140,160,.65)" stroke="none"/><path d="M12 8l3.5-1.5"/></svg>
+        </div>
+        <div>
+          <div class="btn-link-name">Reddit</div>
+          <div class="btn-link-sub">u/mishka_vibes</div>
+        </div>
+      </div>
+      <span class="btn-link-arr">→</span>
+    </a>
+
+  </div>
+
+  <div class="foot">mirikaa · 18+</div>
+
 </div>
-
-<nav>
-  <div class="wrap nav-inner">
-    <div class="logo">Mirikaa</div>
-    <a href="#join" class="nav-cta">Subscribe</a>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="wrap">
-    <span class="eyebrow"><span class="dot"></span> Online now · Replying</span>
-    <div class="portrait reveal"></div>
-    <h1 class="name reveal">Mirikaa</h1>
-    <p class="tagline reveal">The one you keep coming back to.</p>
-    <p class="hero-sub reveal">Get instant access to my private group — exclusive photos, daily updates, and moments only for subscribers.<br/>A closer, more personal space, just for you.</p>
-    </div>
-</header>
-
-
-
-
-
-<section>
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Inside the vault</div>
-      <h2>What's <em>waiting for you.</em></h2>
-    </div>
-    <div class="steps reveal">
-      <div class="step">
-        <div class="n">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        </div>
-        <h3>10+ Exclusive Photos</h3>
-        <p>High quality, personal shots you won't find anywhere else.</p>
-      </div>
-      <div class="step">
-        <div class="n">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="0"/></svg>
-        </div>
-        <h3>Updated Weekly</h3>
-        <p>Fresh content every week — always something new waiting.</p>
-      </div>
-      <div class="step">
-        <div class="n">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="1.8"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
-        </div>
-        <h3>Members Only</h3>
-        <p>None of this exists on Instagram. Private, just for you.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">How it works</div>
-      <h2>Three taps and you're <em>in.</em></h2>
-    </div>
-    <div class="steps reveal">
-      <div class="step"><div class="n">1</div><h3>Tap subscribe</h3><p>Hit the button below — it takes you straight to my private page.</p></div>
-      <div class="step"><div class="n">2</div><h3>Quick secure payment</h3><p>Pay in seconds. Safe, private, no awkward billing on your statement.</p></div>
-      <div class="step"><div class="n">3</div><h3>Instant access</h3><p>You're added right away. Everything unlocks the moment you're in.</p></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">What you get</div>
-      <h2>Inside the <em>subscription.</em></h2>
-    </div>
-    <div class="perks reveal">
-      <div class="perk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div><b>Private group access</b><small>Your invite to a space just for members.</small></div></div>
-      <div class="perk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div><b>Full exclusive gallery</b><small>Every photo set, unlocked the moment you join.</small></div></div>
-      <div class="perk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div><b>Weekly exclusive content</b><small>Fresh content daily — you'll never run out.</small></div></div>
-      <div class="perk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div><b>Have fun with me</b><small>A space to be playful, together.</small></div></div>
-      <div class="perk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div><b>A more personal connection</b><small>Get closer to me than ever before.</small></div></div>
-      <div class="perk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div><b>Cancel anytime</b><small>No lock-in — leave whenever you like.</small></div></div>
-    </div>
-  </div>
-</section>
-
-<section id="join" class="price-sec">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Your pass</div>
-      <h2>One tap and you're <em>in.</em></h2>
-    </div>
-    <div class="pcard reveal">
-      <div class="pcard-badge">Limited spots</div>
-      <div class="pcard-tier">All-Access</div>
-      <div class="price"><span class="amt">$2.5</span> <span class="per">/ month</span> <span class="old">$9.7</span></div>
-      <div class="price-note">☕ Less than a cup of coffee a week — limited time offer</div>
-      <ul>
-        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Private group access</li>
-        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Full exclusive gallery</li>
-        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Weekly exclusive content</li>
-        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Have fun with me</li>
-        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> A more personal connection with me</li>
-        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e58aa5" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Cancel anytime</li>
-      </ul>
-      <button id="subscribeBtn" class="btn btn-primary" style="width:100%;justify-content:center;border:none;">Subscribe now</button>
-      <p class="pcard-note">🔒 Secure &amp; private · Instant access</p>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Why join</div>
-      <h2>A space made <em>just for you.</em></h2>
-    </div>
-    <div class="quotes reveal">
-      <div class="q"><p>New exclusive content added regularly, so there's always something fresh waiting for you.</p></div>
-      <div class="q"><p>A private, closer space — away from the noise of public feeds.</p></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Good to know</div>
-      <h2>Your <em>questions.</em></h2>
-    </div>
-    <div class="faq reveal">
-      <details open><summary>How do I get access after paying? <span class="plus">+</span></summary><div class="a">The moment your payment is confirmed, you're added automatically and everything unlocks instantly.</div></details>
-      <details><summary>Is it private and discreet? <span class="plus">+</span></summary><div class="a">Yes. Payment is secure and billing is discreet — nothing revealing shows up anywhere.</div></details>
-      <details><summary>Can I cancel anytime? <span class="plus">+</span></summary><div class="a">Absolutely. No lock-in — cancel whenever you like and you keep access till your cycle ends.</div></details>
-      <details><summary>What do I actually get? <span class="plus">+</span></summary><div class="a">Private group access, a full exclusive gallery, daily new content, and a more personal connection with me.</div></details>
-    </div>
-  </div>
-</section>
-
-<section class="socials">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Follow me</div>
-      <h2>Find me <em>everywhere.</em></h2>
-    </div>
-    <div class="social-row reveal">
-      <a href="https://www.instagram.com/its.mishkaaaaa?igsh=MTBsbDk5MHM2YzJpMQ==" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://www.threads.com/@mirikaa.vibes" target="_blank" rel="noopener">Threads</a>
-      <a href="https://www.reddit.com/u/mishka_vibes/s/GtGfNyKCiR" target="_blank" rel="noopener">Reddit</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <div class="logo">Mirikaa</div>
-    <p>© 2026 · 18+ only · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="/contact.html">Contact</a></p>
-  </div>
-</footer>
-
-<div id="subModal" class="hidden" style="position:fixed;inset:0;z-index:300;background:rgba(6,4,5,.92);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:24px;">
-  <div style="width:100%;max-width:380px;background:linear-gradient(160deg,#241419,#110a0d 65%);border:1px solid rgba(230,201,168,.3);border-radius:20px;padding:30px 26px;">
-    <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:6px;color:var(--cream);">Almost there</h3>
-    <p style="color:var(--muted);font-size:.85rem;margin-bottom:20px;">Enter your details to continue to secure payment.</p>
-    <input id="subEmail" type="email" placeholder="Email address" style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--line);background:#1a1115;color:var(--cream);font-family:'Poppins',sans-serif;font-size:14px;margin-bottom:12px;" />
-    <input id="subPhone" type="tel" placeholder="Phone number" style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--line);background:#1a1115;color:var(--cream);font-family:'Poppins',sans-serif;font-size:14px;margin-bottom:18px;" />
-    <p id="subError" style="color:#ff8a8a;font-size:12.5px;margin-bottom:12px;display:none;"></p>
-    <button id="subSubmit" class="btn btn-primary" style="width:100%;justify-content:center;border:none;">Continue to payment</button>
-    <button id="subCancel" style="width:100%;background:none;border:none;color:var(--muted);font-size:13px;margin-top:12px;padding:8px;cursor:pointer;">Cancel</button>
-  </div>
-</div>
-
-<script>
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-  },{threshold:.12});
-  document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
-
-  const subModal = document.getElementById('subModal');
-  const subBtn = document.getElementById('subscribeBtn');
-  const subCancel = document.getElementById('subCancel');
-  const subSubmit = document.getElementById('subSubmit');
-  const subError = document.getElementById('subError');
-
-  subBtn.addEventListener('click', () => subModal.classList.remove('hidden'));
-  subCancel.addEventListener('click', () => subModal.classList.add('hidden'));
-
-  subSubmit.addEventListener('click', async () => {
-    const email = document.getElementById('subEmail').value.trim();
-    const phone = document.getElementById('subPhone').value.trim();
-    subError.style.display = 'none';
-    if (!email || !phone) {
-      subError.textContent = 'Please fill in both fields.';
-      subError.style.display = 'block';
-      return;
-    }
-    subSubmit.textContent = 'Please wait...';
-    subSubmit.disabled = true;
-    try {
-      const res = await fetch('/api/create-subscription', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, phone })
-      });
-      const data = await res.json();
-      if (!res.ok || !data.payment_session_id) throw new Error(data.error || 'Something went wrong');
-      const cashfree = Cashfree({ mode: "production" });
-      cashfree.checkout({ paymentSessionId: data.payment_session_id, redirectTarget: "_self" });
-    } catch (err) {
-      subError.textContent = 'Could not start payment. Please try again.';
-      subError.style.display = 'block';
-      subSubmit.textContent = 'Continue to payment';
-      subSubmit.disabled = false;
-    }
-  });
-</script>
 </body>
 </html>
