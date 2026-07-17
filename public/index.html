@@ -16,7 +16,7 @@ body {
   min-height: 100vh;
   font-family: "DM Sans", system-ui, sans-serif;
   font-weight: 300;
-  color: #f7e8ed;
+  color: #3d2530;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,30 +25,33 @@ body {
   padding-bottom: max(52px, env(safe-area-inset-bottom));
   position: relative;
   overflow-x: hidden;
-  background: #160810;
+  background: #fdf1f5;
 }
 
-/* ── Background: layered rose-crimson radial blooms ── */
+/* ── Subtle animated glow background ── */
 body::before {
   content: "";
   position: fixed; inset: 0; z-index: 0;
   background:
-    radial-gradient(ellipse 900px 600px at 50% -5%,  rgba(180, 30, 65, .32), transparent 55%),
-    radial-gradient(ellipse 500px 450px at 5%  55%,  rgba(140, 20, 50, .18), transparent 60%),
-    radial-gradient(ellipse 450px 350px at 98% 80%,  rgba(200, 60, 90, .14), transparent 55%),
-    radial-gradient(ellipse 300px 300px at 60% 100%, rgba(160, 35, 70, .16), transparent 60%),
-    #160810;
+    radial-gradient(ellipse 900px 600px at 50% -5%,  rgba(244, 150, 180, .35), transparent 55%),
+    radial-gradient(ellipse 500px 450px at 5%  55%,  rgba(250, 190, 210, .3), transparent 60%),
+    radial-gradient(ellipse 450px 350px at 98% 80%,  rgba(240, 170, 195, .28), transparent 55%),
+    radial-gradient(ellipse 300px 300px at 60% 100%, rgba(248, 200, 215, .3), transparent 60%),
+    #fdf1f5;
+  animation: glowShift 12s ease-in-out infinite;
+}
+@keyframes glowShift {
+  0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+  50%       { filter: hue-rotate(6deg) brightness(1.04); }
 }
 
-/* Subtle film-grain texture */
 body::after {
   content: "";
   position: fixed; inset: 0; z-index: 0;
-  pointer-events: none; opacity: .035;
+  pointer-events: none; opacity: .025;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Floating rose petals — pure CSS, no JS */
 .petals { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
 .petal {
   position: absolute; top: -20px;
@@ -56,16 +59,16 @@ body::after {
   opacity: 0;
   animation: petalDrift linear infinite;
 }
-.petal:nth-child(1)  { left:8%;   width:7px;  height:9px;  background:rgba(210,60,90,.18);  animation-duration:14s; animation-delay:0s;   }
-.petal:nth-child(2)  { left:22%;  width:9px;  height:11px; background:rgba(230,80,110,.14); animation-duration:11s; animation-delay:2.5s; }
-.petal:nth-child(3)  { left:38%;  width:6px;  height:8px;  background:rgba(200,50,80,.2);   animation-duration:16s; animation-delay:1s;   }
-.petal:nth-child(4)  { left:55%;  width:10px; height:12px; background:rgba(220,70,100,.12); animation-duration:12s; animation-delay:4s;   }
-.petal:nth-child(5)  { left:70%;  width:7px;  height:9px;  background:rgba(240,90,120,.16); animation-duration:15s; animation-delay:0.5s; }
-.petal:nth-child(6)  { left:84%;  width:8px;  height:10px; background:rgba(210,55,85,.18);  animation-duration:13s; animation-delay:3s;   }
-.petal:nth-child(7)  { left:14%;  width:6px;  height:8px;  background:rgba(230,75,105,.14); animation-duration:17s; animation-delay:6s;   }
-.petal:nth-child(8)  { left:46%;  width:9px;  height:11px; background:rgba(200,45,75,.2);   animation-duration:10s; animation-delay:7s;   }
-.petal:nth-child(9)  { left:91%;  width:7px;  height:9px;  background:rgba(240,85,115,.13); animation-duration:14s; animation-delay:2s;   }
-.petal:nth-child(10) { left:63%;  width:8px;  height:10px; background:rgba(215,60,90,.17);  animation-duration:18s; animation-delay:5s;   }
+.petal:nth-child(1)  { left:8%;   width:7px;  height:9px;  background:rgba(230,120,155,.3);  animation-duration:14s; animation-delay:0s;   }
+.petal:nth-child(2)  { left:22%;  width:9px;  height:11px; background:rgba(240,140,170,.24); animation-duration:11s; animation-delay:2.5s; }
+.petal:nth-child(3)  { left:38%;  width:6px;  height:8px;  background:rgba(225,110,150,.32); animation-duration:16s; animation-delay:1s;   }
+.petal:nth-child(4)  { left:55%;  width:10px; height:12px; background:rgba(245,150,180,.22); animation-duration:12s; animation-delay:4s;   }
+.petal:nth-child(5)  { left:70%;  width:7px;  height:9px;  background:rgba(250,160,190,.26); animation-duration:15s; animation-delay:0.5s; }
+.petal:nth-child(6)  { left:84%;  width:8px;  height:10px; background:rgba(230,115,150,.3);  animation-duration:13s; animation-delay:3s;   }
+.petal:nth-child(7)  { left:14%;  width:6px;  height:8px;  background:rgba(240,140,170,.24); animation-duration:17s; animation-delay:6s;   }
+.petal:nth-child(8)  { left:46%;  width:9px;  height:11px; background:rgba(225,105,145,.32); animation-duration:10s; animation-delay:7s;   }
+.petal:nth-child(9)  { left:91%;  width:7px;  height:9px;  background:rgba(250,155,185,.22); animation-duration:14s; animation-delay:2s;   }
+.petal:nth-child(10) { left:63%;  width:8px;  height:10px; background:rgba(235,120,155,.28); animation-duration:18s; animation-delay:5s;   }
 
 @keyframes petalDrift {
   0%   { transform: translateY(0)   rotate(0deg)   translateX(0);   opacity: 0; }
@@ -74,7 +77,6 @@ body::after {
   100% { transform: translateY(105vh) rotate(220deg) translateX(30px); opacity: 0; }
 }
 
-/* ── Page wrapper ── */
 .page {
   position: relative; z-index: 1;
   width: 100%; max-width: 390px;
@@ -89,25 +91,22 @@ body::after {
   margin-bottom: 20px;
 }
 
-/* Rotating conic gradient ring */
 .avatar-ring {
   width: 112px; height: 112px;
   border-radius: 50%;
   padding: 2.5px;
   background: conic-gradient(from 0deg,
-    rgba(220,55,85,.9),
-    rgba(255,140,165,.6),
-    rgba(200,30,65,.9),
-    rgba(255,110,145,.5),
-    rgba(220,55,85,.9)
+    rgba(235,120,155,.9),
+    rgba(255,190,210,.7),
+    rgba(225,100,145,.9),
+    rgba(255,170,195,.6),
+    rgba(235,120,155,.9)
   );
   box-shadow:
-    0 0 0 3px rgba(160,20,50,.15),
-    0 0 40px rgba(200,40,75,.25),
-    0 20px 60px rgba(0,0,0,.65);
-  animation: spinRing 5s linear infinite;
+    0 0 0 3px rgba(230,120,155,.15),
+    0 0 40px rgba(235,130,165,.28),
+    0 20px 60px rgba(120,60,85,.25);
 }
-@keyframes spinRing { to { transform: rotate(360deg); } }
 
 .avatar-img {
   position: absolute;
@@ -118,14 +117,13 @@ body::after {
   background-image: url('https://i.ibb.co/JjgZdn0h/ecea139b-f341-4189-84fa-1b36356558e9-Edited-20260717-031939-0000.jpg');
   background-size: cover;
   background-position: center top;
-  border: 2.5px solid #160810;
+  border: 2.5px solid #fdf1f5;
 }
 
-/* Soft outer glow pulse */
 .avatar-glow {
   position: absolute; inset: -8px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(210,45,80,.22), transparent 70%);
+  background: radial-gradient(circle, rgba(240,140,175,.3), transparent 70%);
   animation: glowPulse 3s ease-in-out infinite;
   pointer-events: none;
 }
@@ -137,105 +135,77 @@ body::after {
 .live-pill {
   position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
   display: inline-flex; align-items: center; gap: 5px;
-  background: rgba(22,8,16,.92);
-  border: 1px solid rgba(220,80,110,.2);
+  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(235,130,165,.25);
   border-radius: 999px; padding: 3px 10px;
-  font-size: 10px; color: rgba(230,180,195,.65);
+  font-size: 10px; color: rgba(160,70,100,.75);
   white-space: nowrap; backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(230,120,155,.15);
 }
 .live-dot {
   width: 6px; height: 6px; border-radius: 50%;
-  background: #ff7a9a; box-shadow: 0 0 8px rgba(255,100,140,.8);
+  background: #ec6b93; box-shadow: 0 0 8px rgba(236,107,147,.8);
   animation: blink 2s ease-in-out infinite; flex-shrink: 0;
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
 
-/* ── Name + bio ── */
 .name {
   font-family: "Cormorant Garamond", serif;
   font-size: 3rem; font-weight: 300;
   font-style: italic;
-  color: #f7e8ed; line-height: 1;
+  color: #4a2a38; line-height: 1;
   letter-spacing: 1px; margin-bottom: 7px;
   text-align: center;
-  text-shadow: 0 2px 30px rgba(200,40,75,.3);
+  text-shadow: 0 2px 30px rgba(235,130,165,.2);
 }
 
 .bio {
   font-family: "Cormorant Garamond", serif;
   font-style: italic; font-size: 1.05rem; font-weight: 300;
-  color: rgba(230,170,185,.5);
-  margin-bottom: 10px; text-align: center;
+  color: rgba(140,70,95,.65);
+  margin-bottom: 28px; text-align: center;
   line-height: 1.55;
 }
 
-/* ── Mood indicator ── */
-.mood-row {
-  display: flex; align-items: center; gap: 6px;
-  margin-bottom: 28px;
+.teaser-block {
+  width: 100%;
+  background: rgba(255,255,255,.35);
+  border: 1px solid rgba(235,130,165,.2);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  text-align: center;
 }
-.mood-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: #ff7a9a; box-shadow: 0 0 8px rgba(255,100,140,.7);
-  animation: blink 2.2s ease-in-out infinite;
+.teaser-quote {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: rgba(90,45,60,.75);
+  line-height: 1.7;
 }
-.mood-text {
-  font-size: 11px; color: rgba(230,170,185,.45);
-  letter-spacing: .6px; text-transform: uppercase;
-}
-
-/* ── Music toggle ── */
-.music-btn {
-  position: fixed; top: max(18px, env(safe-area-inset-top)); right: 18px;
-  z-index: 100;
-  width: 40px; height: 40px; border-radius: 50%;
-  background: rgba(22,8,16,.75);
-  border: 1px solid rgba(220,80,110,.2);
-  backdrop-filter: blur(10px);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: border-color .2s, background .2s;
-  -webkit-tap-highlight-color: transparent;
-}
-.music-btn:hover { border-color: rgba(220,80,110,.45); background: rgba(30,10,20,.85); }
-.music-btn svg { transition: opacity .2s; }
-.music-btn.playing { border-color: rgba(220,80,110,.5); }
-
-/* Spinning bars when playing */
-.bars {
-  display: flex; align-items: flex-end; gap: 2px; height: 14px;
-}
-.bar {
-  width: 3px; border-radius: 2px;
-  background: rgba(230,100,130,.8);
-  animation: none;
-  height: 4px;
-}
-.music-btn.playing .bar:nth-child(1) { animation: barDance 0.8s ease-in-out infinite; }
-.music-btn.playing .bar:nth-child(2) { animation: barDance 0.8s ease-in-out -.2s infinite; }
-.music-btn.playing .bar:nth-child(3) { animation: barDance 0.8s ease-in-out -.4s infinite; }
-.music-btn.playing .bar:nth-child(4) { animation: barDance 0.8s ease-in-out -.1s infinite; }
-@keyframes barDance {
-  0%,100% { height: 4px; }
-  50%      { height: 13px; }
+.teaser-cta {
+  font-size: 11px;
+  color: rgba(190,90,120,.6);
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  margin-top: 8px;
 }
 
-/* ── Links ── */
 .links { width: 100%; display: flex; flex-direction: column; gap: 9px; margin-bottom: 28px; }
 
-/* Main CTA */
 .btn-main {
   width: 100%; border-radius: 18px;
-  background: linear-gradient(145deg, #8b1a38 0%, #6b1228 50%, #9b2040 100%);
+  background: linear-gradient(145deg, #f0a8c0 0%, #e6789f 50%, #f2b5cb 100%);
   background-size: 200% 200%;
-  border: 1px solid rgba(240,100,135,.2);
-  color: #f7e8ed;
+  border: 1px solid rgba(240,150,180,.3);
+  color: #4a2030;
   font-family: "DM Sans", sans-serif;
   text-decoration: none;
   display: flex; align-items: center; justify-content: space-between;
   box-shadow:
-    0 12px 40px rgba(120,15,45,.55),
-    inset 0 1px 0 rgba(255,200,215,.1),
-    inset 0 -1px 0 rgba(0,0,0,.2);
+    0 12px 40px rgba(230,120,155,.35),
+    inset 0 1px 0 rgba(255,255,255,.4),
+    inset 0 -1px 0 rgba(150,60,90,.1);
   transition: transform .2s, box-shadow .2s;
   cursor: pointer;
   animation: gradShift 5s ease infinite;
@@ -247,15 +217,14 @@ body::after {
   0%,100% { background-position: 0% 50%; }
   50%      { background-position: 100% 50%; }
 }
-/* Shimmer sweep */
 .btn-main::before {
   content: "";
   position: absolute; inset: 0;
   background: linear-gradient(110deg,
     transparent 20%,
-    rgba(255,200,215,.09) 45%,
-    rgba(255,200,215,.13) 50%,
-    rgba(255,200,215,.09) 55%,
+    rgba(255,255,255,.25) 45%,
+    rgba(255,255,255,.35) 50%,
+    rgba(255,255,255,.25) 55%,
     transparent 80%
   );
   animation: shimmer 4s ease-in-out infinite;
@@ -264,7 +233,7 @@ body::after {
   0%   { transform: translateX(-100%); }
   60%,100% { transform: translateX(150%); }
 }
-.btn-main:hover  { transform: translateY(-2px); box-shadow: 0 18px 50px rgba(140,20,55,.6), inset 0 1px 0 rgba(255,200,215,.12); }
+.btn-main:hover  { transform: translateY(-2px); box-shadow: 0 18px 50px rgba(230,120,155,.4), inset 0 1px 0 rgba(255,255,255,.45); }
 .btn-main:active { transform: scale(.985); }
 
 .btn-main-inner {
@@ -272,29 +241,28 @@ body::after {
   padding: 22px 22px; text-align: left; position: relative; z-index: 1;
 }
 .btn-main-title {
-  font-size: 15px; font-weight: 500; color: #f7e8ed;
+  font-size: 15px; font-weight: 500; color: #4a2030;
   display: flex; align-items: center; gap: 8px;
 }
 .btn-main-sub {
   font-family: "Cormorant Garamond", serif;
   font-style: italic; font-size: 13.5px;
-  color: rgba(245,200,215,.6);
+  color: rgba(80,35,50,.7);
 }
 .btn-main-arr {
   padding: 22px 20px 22px 0;
-  font-size: 18px; color: rgba(245,180,200,.4);
+  font-size: 18px; color: rgba(80,35,50,.4);
   position: relative; z-index: 1; flex-shrink: 0;
   transition: transform .2s, color .2s;
 }
-.btn-main:hover .btn-main-arr { transform: translateX(4px); color: rgba(245,180,200,.7); }
+.btn-main:hover .btn-main-arr { transform: translateX(4px); color: rgba(80,35,50,.7); }
 
-/* Regular links */
 .btn-link {
   width: 100%; padding: 14px 16px; border-radius: 14px;
-  background: rgba(255,255,255,.025);
-  border: 1px solid rgba(220,80,110,.09);
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(235,130,165,.18);
   backdrop-filter: blur(8px);
-  color: #f7e8ed;
+  color: #4a2a38;
   font-family: "DM Sans", sans-serif;
   text-decoration: none;
   display: flex; align-items: center; justify-content: space-between;
@@ -302,38 +270,36 @@ body::after {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-.btn-link:hover  { background: rgba(255,255,255,.05); border-color: rgba(220,80,110,.2); transform: translateY(-1px); }
+.btn-link:hover  { background: rgba(255,255,255,.8); border-color: rgba(235,130,165,.35); transform: translateY(-1px); }
 .btn-link:active { transform: scale(.985); }
 
 .btn-link-left  { display: flex; align-items: center; gap: 12px; }
 .btn-link-icon  {
   width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
-  background: rgba(220,55,85,.08);
-  border: 1px solid rgba(220,80,110,.1);
+  background: rgba(235,130,165,.12);
+  border: 1px solid rgba(235,130,165,.18);
   display: flex; align-items: center; justify-content: center;
 }
-.btn-link-name  { font-size: 13.5px; color: #f7e8ed; font-weight: 400; }
-.btn-link-sub   { font-size: 11px; color: rgba(220,160,175,.4); margin-top: 1px; }
-.btn-link-arr   { color: rgba(220,100,130,.25); font-size: 14px; transition: transform .15s, color .15s; flex-shrink: 0; }
-.btn-link:hover .btn-link-arr { transform: translateX(3px); color: rgba(230,100,130,.55); }
+.btn-link-name  { font-size: 13.5px; color: #4a2a38; font-weight: 400; }
+.btn-link-sub   { font-size: 11px; color: rgba(140,70,95,.55); margin-top: 1px; }
+.btn-link-arr   { color: rgba(200,100,135,.4); font-size: 14px; transition: transform .15s, color .15s; flex-shrink: 0; }
+.btn-link:hover .btn-link-arr { transform: translateX(3px); color: rgba(200,100,135,.75); }
 
-/* ── Footer ── */
 .foot {
-  font-size: 10px; color: rgba(200,130,155,.18);
+  font-size: 10px; color: rgba(150,80,105,.35);
   letter-spacing: 1px; text-align: center;
   text-transform: uppercase;
 }
 
-/* ── Rose petal divider ornament ── */
 .ornament {
   display: flex; align-items: center; gap: 10px;
   width: 100%; margin: 2px 0 10px;
 }
 .ornament-line {
   flex: 1; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(200,55,85,.18), transparent);
+  background: linear-gradient(90deg, transparent, rgba(235,130,165,.3), transparent);
 }
-.ornament-center { font-size: 12px; opacity: .3; }
+.ornament-center { font-size: 12px; opacity: .4; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -342,7 +308,6 @@ body::after {
 </head>
 <body>
 
-<!-- Floating petals -->
 <div class="petals" aria-hidden="true">
   <div class="petal"></div><div class="petal"></div><div class="petal"></div>
   <div class="petal"></div><div class="petal"></div><div class="petal"></div>
@@ -350,17 +315,6 @@ body::after {
   <div class="petal"></div>
 </div>
 
-<!-- Ambient music toggle -->
-<button class="music-btn" id="musicBtn" aria-label="Toggle ambient music" title="Ambient music">
-  <div class="bars">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-  </div>
-</button>
-
-<!-- Hidden audio — soft ambient/lo-fi tone via Web Audio API (no external file needed) -->
 <div class="page">
 
   <!-- Avatar -->
@@ -378,15 +332,17 @@ body::after {
   <h1 class="name">Mirikaa</h1>
   <p class="bio">"For those who want to get closer."</p>
 
-  <div class="mood-row">
-    <span class="mood-dot"></span>
-    <span class="mood-text">accepting new admirers</span>
+  <!-- Teaser quote block -->
+  <div class="teaser-block">
+    <div class="teaser-quote">
+      "I post what I can't share anywhere else.<br/>Join if you're curious… 🌹"
+    </div>
+    <div class="teaser-cta">exclusive · uncensored · personal</div>
   </div>
 
   <!-- Links -->
   <div class="links">
 
-    <!-- Main CTA -->
     <a href="https://www.fanvue.com/mirikaa" target="_blank" rel="noopener" class="btn-main">
       <div class="btn-main-inner">
         <div class="btn-main-title">🔒 Join my private space</div>
@@ -402,18 +358,18 @@ body::after {
     </div>
 
     <!-- Instagram -->
-    <a href="https://www.instagram.com/its.mishkaaaaa?igsh=MTBsbDk5MHM2YzJpMQ==" target="_blank" rel="noopener" class="btn-link">
+    <a href="https://www.instagram.com/mirikaa.vibes?igsh=dDZweWwxN25wd3dn" target="_blank" rel="noopener" class="btn-link">
       <div class="btn-link-left">
         <div class="btn-link-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(230,100,130,.6)" stroke-width="1.8">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(200,100,135,.75)" stroke-width="1.8">
             <rect x="2" y="2" width="20" height="20" rx="5"/>
             <circle cx="12" cy="12" r="5"/>
-            <circle cx="17.5" cy="6.5" r="1" fill="rgba(230,100,130,.6)" stroke="none"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="rgba(200,100,135,.75)" stroke="none"/>
           </svg>
         </div>
         <div>
           <div class="btn-link-name">Instagram</div>
-          <div class="btn-link-sub">@its.mishkaaaaa</div>
+          <div class="btn-link-sub">@mirikaa.vibes</div>
         </div>
       </div>
       <span class="btn-link-arr">→</span>
@@ -423,7 +379,7 @@ body::after {
     <a href="https://www.threads.com/@mirikaa.vibes" target="_blank" rel="noopener" class="btn-link">
       <div class="btn-link-left">
         <div class="btn-link-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(230,100,130,.6)" stroke-width="1.8">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(200,100,135,.75)" stroke-width="1.8">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
             <path d="M8.5 15.5c1 1 3.5 1.5 5-.5s1.5-5-.5-6.5S8 8 7.5 10s1 5 4.5 5"/>
           </svg>
@@ -440,11 +396,11 @@ body::after {
     <a href="https://www.reddit.com/u/mishka_vibes/s/GtGfNyKCiR" target="_blank" rel="noopener" class="btn-link">
       <div class="btn-link-left">
         <div class="btn-link-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(230,100,130,.6)" stroke-width="1.8">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(200,100,135,.75)" stroke-width="1.8">
             <circle cx="12" cy="12" r="10"/>
             <path d="M17 12a2 2 0 00-3.4-1.4C12.8 10.2 12.4 10 12 10s-.8.2-1.6.6A2 2 0 007 12c0 1.1.9 2 2 2h6a2 2 0 002-2z"/>
             <path d="M9 16c.8.5 1.9.8 3 .8s2.2-.3 3-.8"/>
-            <circle cx="16" cy="7" r="1.2" fill="rgba(230,100,130,.6)" stroke="none"/>
+            <circle cx="16" cy="7" r="1.2" fill="rgba(200,100,135,.75)" stroke="none"/>
             <path d="M12 8l3.5-1.5"/>
           </svg>
         </div>
@@ -461,57 +417,5 @@ body::after {
   <div class="foot">mirikaa · 18+</div>
 </div>
 
-<script>
-// ── Ambient music via Web Audio API ───────────────────────
-// No external file needed — generates a soft, dreamy pad tone
-let ctx = null, gainNode = null, oscillators = [], playing = false;
-const btn = document.getElementById("musicBtn");
-
-function buildAmbience() {
-  ctx = new (window.AudioContext || window.webkitAudioContext)();
-  gainNode = ctx.createGain();
-  gainNode.gain.setValueAtTime(0, ctx.currentTime);
-  gainNode.connect(ctx.destination);
-
-  // Soft pad: layered sine waves — a minor 9th chord feel
-  const freqs = [110, 138.6, 164.8, 220, 246.9, 329.6];
-  oscillators = freqs.map(freq => {
-    const osc = ctx.createOscillator();
-    const oscGain = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.value = freq;
-    // Gentle vibrato
-    const lfo = ctx.createOscillator();
-    const lfoGain = ctx.createGain();
-    lfo.frequency.value = 0.25 + Math.random() * 0.1;
-    lfoGain.gain.value = 0.4;
-    lfo.connect(lfoGain);
-    lfoGain.connect(osc.frequency);
-    lfo.start();
-    oscGain.gain.value = 0.04 + Math.random() * 0.025;
-    osc.connect(oscGain);
-    oscGain.connect(gainNode);
-    osc.start();
-    return osc;
-  });
-}
-
-function fadeIn()  { gainNode.gain.cancelScheduledValues(ctx.currentTime); gainNode.gain.setValueAtTime(gainNode.gain.value, ctx.currentTime); gainNode.gain.linearRampToValueAtTime(1, ctx.currentTime + 2); }
-function fadeOut() { gainNode.gain.cancelScheduledValues(ctx.currentTime); gainNode.gain.setValueAtTime(gainNode.gain.value, ctx.currentTime); gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5); }
-
-btn.addEventListener("click", async () => {
-  if (!ctx) buildAmbience();
-  if (ctx.state === "suspended") await ctx.resume();
-
-  playing = !playing;
-  if (playing) {
-    fadeIn();
-    btn.classList.add("playing");
-  } else {
-    fadeOut();
-    btn.classList.remove("playing");
-  }
-});
-</script>
 </body>
 </html>
